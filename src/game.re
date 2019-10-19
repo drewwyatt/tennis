@@ -1,0 +1,1 @@
+Input.strings |> Input.parse |> Js.log;

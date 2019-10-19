@@ -1,1 +1,1 @@
-Input.strings |> Input.parse |> Js.log;
+Input.strings |> Input.parse |> Array.map(Score.of_round) |> Js.log;

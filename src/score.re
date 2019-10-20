@@ -1,18 +1,28 @@
+let _pointValue = ["0", "15", "30", "40", "Adv"];
+
 type t =
   | Points(int, int)
   | Winner(Player.t);
 
-let didWin = (wScore, lScore) => wScore + 1 >= 4 && wScore > lScore;
+let _did_win = (wScore, lScore) => wScore + 1 >= 4 && wScore > lScore;
+
+let _increment = points =>
+  switch (points) {
+  | (4, 4) => Points(3, 3)
+  | (a, b) => Points(a, b)
+  };
+
+let _to_points = List.nth(_pointValue);
 
 let update = ((a, b), player) =>
   switch (player) {
-  | Player.A => didWin(a, b) ? Winner(Player.A) : Points(a + 1, b)
-  | Player.B => didWin(b, a) ? Winner(Player.B) : Points(a, b + 1)
+  | Player.A => _did_win(a, b) ? Winner(Player.A) : _increment((a + 1, b))
+  | Player.B => _did_win(b, a) ? Winner(Player.B) : _increment((a, b + 1))
   };
 
-let print = score =>
+let format = score =>
   switch (score) {
-  | Points(a, b) => a->string_of_int ++ " - " ++ b->string_of_int
+  | Points(a, b) => a->_to_points ++ " - " ++ b->_to_points
   | Winner(p) => "Game " ++ p->Player.to_string
   };
 
@@ -34,4 +44,4 @@ let _tabulate = round => {
   );
 };
 
-let of_round = round => _tabulate(round) |> Array.map(print);
+let of_round = round => _tabulate(round) |> Array.map(format);

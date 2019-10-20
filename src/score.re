@@ -10,9 +10,13 @@ let update = ((a, b), player) =>
   | Player.B => didWin(b, a) ? Winner(Player.B) : Points(a, b + 1)
   };
 
-let print = ((a, b)) => a->string_of_int ++ " - " ++ b->string_of_int;
+let print = score =>
+  switch (score) {
+  | Points(a, b) => a->string_of_int ++ " - " ++ b->string_of_int
+  | Winner(p) => "Game " ++ p->Player.to_string
+  };
 
-let of_round = round => {
+let _tabulate = round => {
   let acc = ref(Points(0, 0));
   Array.map(
     winner => {
@@ -29,3 +33,5 @@ let of_round = round => {
     round,
   );
 };
+
+let of_round = round => _tabulate(round) |> Array.map(print);
